@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<InputFile                       = "samplenew.txt"/>
+<OutputFile                     = "samplenew_out.txt"/>
+<EmailModelFile            = "samplenew_emailmodel_out.txt"/>
+<FieldSeparatorChar    = "|"/>
+<AgencyField1                = "Agency"/>
+<AgencyField2                = "Agency Sub-element"/>
