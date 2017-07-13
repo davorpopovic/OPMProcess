@@ -1,7 +1,6 @@
 TO-DO:
 
-- Add support to read from xml file
-- generate/process data into samplenew_emailmodel_out.txt
+- actually read xml file properly (content hard-coded temporarily)
 
 ====================
 
