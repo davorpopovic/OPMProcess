@@ -57,7 +57,7 @@ public class OPMProcess {
                 firstName = "NO NAME (Should never happen)";
                 middleName = "NO NAME (Should never happen)";
             }
-            //replace original 'EmployeeName' entry with "<last>|<first>|<middle>" entry
+            //replace original 'EmployeeName' entry with <last>|<first>|<middle> entry
             //and rename new line entry as newLine
             String newLine = line.replace(fullName, lastName + "|" + firstName + "|" + middleName + "|");
 
@@ -79,7 +79,6 @@ public class OPMProcess {
 
         //Writer for OutputFile
         FileWriter OutputFile_writer = new FileWriter(OutputFile);
-
 
         //write header to OutputFile
         OutputFile_writer.write("\"Agency\",\"AgencySub-element\",\"OccupationTitle\",\"OccupationalCategory\",\"PayBasis\",\"Grade\",\"PayPlan\",\"BasicPay\",\"ServiceCompDate\",\"SupervisoryStatus\",\"Tenure\",\"TypeofAppointment\",\"WorkSchedule\",\"AsofDate\",\"BargainingUnit\",\"FLSA\",\"FunctionalClass\",\"PayRateDeterminant\",\"PersonnelOfficeID\",\"PositionOccupied\",\"Step/Rate\",\"VeteranStatus\",\"AdjustedBasicPay\",\"TotalPay\",\"CSA\",\"LocalityAdjustment\",\"LocalityPayArea\",\"CBSA\",\"SupervisoryDifferential\",\"SpecialPayTableId\",\"RatingofRecordPattern\",\"RatingofRecordPeriod\",\"LastName\",\"FirstName\",\"MiddleName\",\"City\",\"State\",\"County\",\"Country\"");
@@ -146,7 +145,9 @@ public class OPMProcess {
 
     public static void main(String[] args) throws IOException {
 
-        String InputFile = "/home/nick/IdeaProjects/OPMProcess/src/OPMProcess/samplenew.txt";
+        //String InputFile = "/home/nick/IdeaProjects/OPMProcess/src/OPMProcess/samplenew.txt";
+        String InputFile = "/media/nick/Lexar/OPMFB2017/OPMFB2017.txt";
+
         String OutputFile = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_out.txt";
         String FieldSeparatorChar = "|";
         String EmailModelFile = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_emailmodel_out.txt";
