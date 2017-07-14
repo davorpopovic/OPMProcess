@@ -2,6 +2,13 @@ package mainpackage;
 
 import com.steadystate.css.util.Output;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -74,6 +81,9 @@ public class OPMProcess {
     public static void procData(String InputFile, String OutputFile, String FieldSeparator,
                                 String EmailModelFile, String AgencyField1, String AgencyField2) throws IOException {
 
+        //writer for <EMAIL MODEL FILE>
+        FileWriter EmailModelFile_writer = new FileWriter(EmailModelFile);
+
         //reader for InputFile
         BufferedReader InputFile_reader = new BufferedReader(new FileReader(InputFile));
 
@@ -99,17 +109,18 @@ public class OPMProcess {
             if (procLine(line) != "") {
                 OutputFile_writer.write(procLine(line));
                 OutputFile_writer.write("\n");
+
+                // (2) BUILD HASH TABLE
+                int second_pos = StringUtils.ordinalIndexOf(line, FieldSeparator, 2);
+                key = line.substring(0, second_pos);
+
+                //key does not exist in table: ADD IT
+                if (!table.containsKey(key)) {
+                    table.put(key, value);
+                    value++;
+                }
             }
 
-            // (2) BUILD HASH TABLE
-            int second_pos = StringUtils.ordinalIndexOf(line,FieldSeparator, 2);
-            key = line.substring(0, second_pos);
-
-            //key does not exist in table: ADD IT
-            if(!table.containsKey(key)){
-                table.put(key, value);
-                value ++;
-            }
         }
 
         //flush the OutputFile writer content and close it
@@ -122,20 +133,20 @@ public class OPMProcess {
 
         /* Write HASH TABLE contents to EmailModelFile*/
 
-        //writer for <EMAIL MODEL FILE>
-        FileWriter EmailModelFile_writer = new FileWriter(EmailModelFile);
+
         Enumeration k_enum = table.keys();
 
         EmailModelFile_writer.write("\"Agency\",\"Agency Sub-element\",\"Email model\",\"URL\"");
         EmailModelFile_writer.write("\n");
 
-        while(k_enum.hasMoreElements()) {
+        while (k_enum.hasMoreElements()) {
             String entry = (String) k_enum.nextElement();
             String polished_entry = "\"" + entry.replaceAll("[|]", "\",\"") + "\"" + ",\"\",\"\"";
 
             EmailModelFile_writer.write(polished_entry);
             EmailModelFile_writer.write("\n");
         }
+
         //flush the EmailModelFile writer content and close it
         EmailModelFile_writer.flush();
         EmailModelFile_writer.close();
@@ -145,21 +156,73 @@ public class OPMProcess {
 
     public static void main(String[] args) throws IOException {
 
-        //String InputFile = "/home/nick/IdeaProjects/OPMProcess/src/OPMProcess/samplenew.txt";
-        String InputFile = "/media/nick/Lexar/OPMFB2017/OPMFB2017.txt";
+        if (args.length == 0) {
+            throw new IOException("error: only argument is input file - no file supplied");
+        }
 
-        String OutputFile = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_out.txt";
-        String FieldSeparatorChar = "|";
-        String EmailModelFile = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_emailmodel_out.txt";
-        String AgencyField1 = "Agency";
-        String AgencyField2 = "Agency Sub-element";
+        else if (args.length > 1) {
+            throw new IOException("usage: too many arguments, use only one!");
+        }
 
-        // process the input data file
-        // generates: (1) double-quoted csv file with <|> replaced with <,>
-        //                and eliminates records containing <NAME WITHHELD>
-        //            (2) double-quoted csv file with unique (Agency, Agency Sub-element)
-        //                entries
-        procData(InputFile, OutputFile, FieldSeparatorChar, EmailModelFile, AgencyField1, AgencyField2);
+        else {
+
+            File XML_CONFIG_FILE = new File(args[0]);
+            if(!XML_CONFIG_FILE.exists()){
+                throw new IOException("XML CONFIG FILE: Does not exist!");
+            }
+
+            if(!XML_CONFIG_FILE.canRead()){
+                throw new IOException("XML CONFIG FILE: cannot read - check file permissions");
+            }
+
+            //fields to be populated by reading given XML file
+            String InputFile = "";
+            String OutputFile = "";
+            String EmailModelFile = "";
+            String FieldSeparatorChar = "";
+            String AgencyField1 = "";
+            String AgencyField2 = "";
+
+
+            //parse XML and populate values
+            InputStream targetStream = new FileInputStream(new File("/home/nick/IdeaProjects/OPMProcess/src/mainpackage/OPMProcess.xml"));
+            Document doc = Jsoup.parse(targetStream, null, "", Parser.htmlParser().xmlParser());
+            Elements inputs = doc.getElementsByTag("input");
+
+            //go through all input parameters
+            for (Element input : inputs) {
+
+                //should only loop once (get the arrtibute's KEY AND VALUE)
+                for (Attribute attr : input.attributes()) {
+                    System.out.println(attr.getKey());
+
+                    if (attr.getKey().equals("InputFile")) {
+                        InputFile = attr.getValue();
+                    } else if (attr.getKey().equals("OutputFile")) {
+                        OutputFile = attr.getValue();
+                    } else if (attr.getKey().equals("EmailModelFile")) {
+                        EmailModelFile = attr.getValue();
+                    } else if (attr.getKey().equals("FieldSeparatorChar")) {
+                        FieldSeparatorChar = attr.getValue();
+                    } else if (attr.getKey().equals("AgencyField1")) {
+                        AgencyField1 = attr.getValue();
+                    } else if (attr.getKey().equals("AgencyField2")) {
+                        AgencyField2 = attr.getValue();
+                    } else {
+
+                    }
+
+                }
+            }
+
+
+            // process the input data file
+            // generates: (1) double-quoted csv file with <|> replaced with <,>
+            //                and eliminates records containing <NAME WITHHELD>
+            //            (2) double-quoted csv file with unique (Agency, Agency Sub-element)
+            //                entries
+            procData(InputFile, OutputFile, FieldSeparatorChar, EmailModelFile, AgencyField1, AgencyField2);
+        }
 
     }
 }

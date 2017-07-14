@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-    <input InputFile = "samplenew.txt"/>
-    <input OutputFile                     = "samplenew_out.txt"/>
-    <input EmailModelFile            = "samplenew_emailmodel_out.txt"/>
-    <input FieldSeparatorChar    = "|"/>
-    <input AgencyField1                = "Agency"/>
-    <input AgencyField2                = "Agency Sub-element"/>
+    <input InputFile           = "/media/nick/Lexar/OPMFB2017/OPMFB2017.txt"/>
+    <input OutputFile          = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_out2.txt"/>
+    <input EmailModelFile      = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_emailmodel_out2.txt"/>
+    <input FieldSeparatorChar  = "|"/>
+    <input AgencyField1        = "Agency"/>
+    <input AgencyField2        = "Agency Sub-element"/>
 </root>

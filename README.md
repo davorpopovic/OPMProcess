@@ -1,9 +1,9 @@
 TO-DO:
 
-- actually read xml file properly (content hard-coded temporarily)
+- N/A
 
 ====================
 
 Problems:
 
-- given xml files does not parse correctly
+- N/A
