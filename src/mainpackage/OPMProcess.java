@@ -1,17 +1,14 @@
 package mainpackage;
 
-import com.steadystate.css.util.Output;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
-import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -185,7 +182,7 @@ public class OPMProcess {
 
 
             //parse XML and populate values
-            InputStream targetStream = new FileInputStream(new File("/home/nick/IdeaProjects/OPMProcess/src/mainpackage/OPMProcess.xml"));
+            InputStream targetStream = new FileInputStream(XML_CONFIG_FILE);
             Document doc = Jsoup.parse(targetStream, null, "", Parser.htmlParser().xmlParser());
             Elements inputs = doc.getElementsByTag("input");
 
@@ -194,7 +191,7 @@ public class OPMProcess {
 
                 //should only loop once (get the arrtibute's KEY AND VALUE)
                 for (Attribute attr : input.attributes()) {
-                    System.out.println(attr.getKey());
+                    //System.out.println(attr.getKey());
 
                     if (attr.getKey().equals("InputFile")) {
                         InputFile = attr.getValue();

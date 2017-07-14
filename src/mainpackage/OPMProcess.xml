@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <input InputFile           = "/media/nick/Lexar/OPMFB2017/OPMFB2017.txt"/>
-    <input OutputFile          = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_out2.txt"/>
-    <input EmailModelFile      = "/home/nick/IdeaProjects/OPMProcess/src/mainpackage/samplenew_emailmodel_out2.txt"/>
+    <input OutputFile          = "/home/nick/IdeaProjects/testing_package/src/mainpackage/samplenew_out2.txt"/>
+    <input EmailModelFile      = "/home/nick/IdeaProjects/testing_package/src/mainpackage/samplenew_emailmodel_out2.txt"/>
     <input FieldSeparatorChar  = "|"/>
     <input AgencyField1        = "Agency"/>
     <input AgencyField2        = "Agency Sub-element"/>
